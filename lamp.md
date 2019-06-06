@@ -50,7 +50,7 @@ query_cache_type       = 1
 ```
 For security cause, add following line into [mysqld] sector of /etc/my.cnf
 
-`bing-address = 127.0.0.1`
+`bind-address = 127.0.0.1`
 
 Thus MySQL will be only visited by local not remotely.
 
