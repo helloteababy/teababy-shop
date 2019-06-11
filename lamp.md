@@ -29,7 +29,7 @@ PHP additional extensions to pick
 
 ```
 ImageMagick # for zooming/croping pictures
-memcached # an excellent cache
+memcached # an excellent cache for big service while means little to small site
 ```
 
 ## Configure for better performance ##
@@ -113,4 +113,4 @@ opcache.enable => On
 opcache.enable_cli => On
 ```
 
-The configuration files of above cache system locates in */usr/local/php/php.d*
+The configuration files of above cache system locates in */usr/local/php/php.d/*
