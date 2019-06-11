@@ -4,6 +4,10 @@
 
 > Varnish Cache is a web application accelerator also known as a caching HTTP reverse proxy. You install it in front of any server that speaks HTTP and configure it to cache the contents. Varnish Cache is really, really fast. It typically speeds up delivery with a factor of 300 - 1000x, depending on your architecture. 
 
+<Warning>
+*Do not use Varnish service before your site is all set*
+</Warning>
+
 ### How to use Varnish in brief? ###
 
 **Varnish** is typically a proxy hence need to combine the use of **Apache**, put Varnish in the front and set port as 80 as all broswers use this default port, and change Apache localhost port to 127.0.0.1:8080 as backend server, remember to make this change in both /usr/local/apache/conf/httpd.conf and all vhosts on your website under /usr/local/apache/conf/vhost/mysite.com.conf
