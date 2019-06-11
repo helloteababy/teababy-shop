@@ -99,3 +99,18 @@ Default value of **MaxConnectionPerChild** is 0 which means **unlimited**, chang
 3. Enable `httpd-default.conf
 
 Uncomment `Include conf/extra/httpd-default.conf` in /usr/loca/apache/conf/httpd.conf
+
+### Setup cache system: Memcached + Opcache ###
+
+Defaultly these two cache tools are actived, run comman below to check:
+
+`php -i | grep opcache`
+
+If the following lines show up, this means it's ok.
+
+```
+opcache.enable => On
+opcache.enable_cli => On
+```
+
+The configuration files of above cache system locates in */usr/local/php/php.d*
