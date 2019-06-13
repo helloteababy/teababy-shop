@@ -61,3 +61,43 @@ swapon /etc/swapfile
 ### Update the whole system ###
 
 `sudo yum update`
+
+## Secure the system ##
+
+1. Active firewall
+
+Firewalld is the default in CentOS 7.x, check the stutus by typing:
+
+`systemctl status firewalld`
+
+Start it once it's not active: `systemctl firewalld start`
+
+Then configure it to let following ports go only:
+
+* port 80  # for websever apache/nginx/lighttpd
+* port 443  # for ssl
+* and the port used by ssh # default is port 22 but you should change it in /etc/ssh/sshd_config
+
+```
+firewall-cmd --zone=public --permanent --add-port=80/tcp
+firewall-cmd --zone=public --permanent --add-port=443/tcp
+firewall-cmd --zone=public --permanent --add-port=22/tcp
+```
+
+You can also edit the firewalld configuration files manually instead of typing command.
+
+```
+vi /etc/firewalld/zones/public.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<zone>
+  <short>Public</short>
+  <description>For use in public areas. You do not trust the other computers on networks to not harm your computer. Only selected incoming connections are accepted.</description>
+  <service name="ssh"/>
+  <service name="dhcpv6-client"/>
+  <port protocol="tcp" port="80"/>
+  <port protocol="tcp" port="443"/>
+  <port protocol="tcp" port="22"/>
+</zone>
+```
+
