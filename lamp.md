@@ -84,14 +84,24 @@ Firstly uncomment `Include conf/extra/httpd-mpm.conf` in /usr/local/apache/conf/
 
 ```
 <IfModule mpm_event_module>
-    StartServers             3
-    MinSpareThreads         35
-    MaxSpareThreads         85
-    ThreadsPerChild         25
-    MaxRequestWorkers      400
-    MaxConnectionsPerChild   50
+    StartServers            2 
+    MinSpareThreads         10
+    MaxSpareThreads         30
+    ThreadsPerChild         10
+    ServerLimit             16
+    MaxRequestWorkers      150
+    MaxConnectionsPerChild   300
+    AsyncRequestWorkerFactor 2
 </IfModule>
 ```
+Above settings is for 1G CPU & 1G RAM VPS, check below for more details about how to configure it:
+
+1. [Apache MPM worker | Apache HTTP Server Documentation Version 2.4
+](http://httpd.apache.org/docs/2.4/zh-cn/mod/worker.html)
+2. [Apache MPM event | Apache HTTP Server Documentation Version 2.4](http://httpd.apache.org/docs/2.4/zh-cn/mod/event.html)
+3. [apache的配置优化 | 博客园](http://www.cnblogs.com/window07/archive/2009/06/08/1498566.html)
+4. [
+Apache性能优化(1):多处理模块event性能优化](https://www.jianxiangqiao.com/apache2-4-optimizing/)
 
 You will see many mpm available, the default mpm is event. 
 Default value of **MaxConnectionPerChild** is 0 which means **unlimited**, change this or Apache will cost a lot of memory and the hence a "Kill" of Apache happened, that means your website will be down untill enough memeory available again.
