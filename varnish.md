@@ -95,6 +95,64 @@ sub vcl_backend_response {
 }
 ```
 
+### Prevent pages from cached to avoid cart empty ###
+
+```
+if (req.url ~ "^/(cart|my-account|checkout|addons)") {
+ return (pass);
+ }
+if ( req.url ~ "\?add-to-cart=" ) {
+ return (pass);
+ }
+```
+
+### Why is my Varnish configuration not working in WooCommerce? ###
+
+Check out the following WordPress.org Support forum post on [how cookies may be affecting your varnish coding].(https://wordpress.org/support/topic/varnish-configuration-not-working-in-woocommerce)
+
+```
+Add this to vcl_recv above "if (req.http.cookie) {":
+
+# Unset Cookies except for WordPress admin and WooCommerce pages 
+if (!(req.url ~ "(wp-login|wp-admin|cart|my-account/*|wc-api*|checkout|addons|logout|lost-password|product/*)")) { 
+unset req.http.cookie; 
+} 
+# Pass through the WooCommerce dynamic pages 
+if (req.url ~ "^/(cart|my-account/*|checkout|wc-api/*|addons|logout|lost-password|product/*)") { 
+return (pass); 
+} 
+# Pass through the WooCommerce add to cart 
+if (req.url ~ "\?add-to-cart=" ) { 
+return (pass); 
+} 
+# Pass through the WooCommerce API
+if (req.url ~ "\?wc-api=" ) { 
+return (pass); 
+} 
+# Block access to php admin pages via website 
+if (req.url ~ "^/phpmyadmin/.*$" || req.url ~ "^/phppgadmin/.*$" || req.url ~ "^/server-status.*$") { 
+error 403 "For security reasons, this URL is only accesible using localhost (127.0.0.1) as the hostname"; 
+} 
+#
+
+Add this to vcl_fetch:
+
+# Unset Cookies except for WordPress admin and WooCommerce pages 
+if ( (!(req.url ~ "(wp-(login|admin)|login|cart|my-account/*|wc-api*|checkout|addons|logout|lost-password|product/*)")) || (req.request == "GET") ) { 
+unset beresp.http.set-cookie; 
+} 
+#
+```
+
+### Why is my Password Reset stuck in a loop? ###
+
+This is due to the My Account page being cached, Some hosts with server side caching don’t prevent the following file from being cached:
+
+> my-account.php
+
+If you’re unable to reset your password and keep being returned to the login screen, please speak to your host to make sure this page is being excluded from their caching.
+
 ### Reference: ###
 1. [How to put varnish cache on your wordpress site](https://blog.pair.com/2017/09/08/put-varnish-cache-wordpress-site/)
 2. [Purging and banning on Varnish users guide](https://varnish-cache.org/docs/trunk/users-guide/purging.html)
+3. [Configuring caching plugins](https://docs.woocommerce.com/document/configuring-caching-plugins/)
