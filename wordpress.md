@@ -78,7 +78,7 @@ define('WP_CACHE', true);
 2. Paste lines below into it
 
 ```
-# Rediect http to https, works for both www or not
+# Redirect http to https, works for both www or not
 # Don't put following code into BEGIN WordPress section
 # Source: https://wordpress.org/support/topic/ssl-redirect-breaks-on-http/
 <IfModule mod_rewrite.c>
