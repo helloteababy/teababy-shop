@@ -72,8 +72,7 @@ Open browser and type your domain like example.com while will lead you to a inst
 define('ENABLE_CACHE', true);
 define('WP_CACHE', true);
 ```
-
-## Force load https with .htaccess ##
+## Force loading https with .htaccess ##
 
 1. Create .htaccss file if not exist
 2. Paste lines below into it
