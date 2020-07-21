@@ -73,7 +73,33 @@ define('ENABLE_CACHE', true);
 define('WP_CACHE', true);
 ```
 
+## Force load https with .htaccess ##
 
+1. Create .htaccss file if not exist
+2. Paste lines below into it
+
+> # Rediect http to https, works for both www or not
+> # Don't put following code into BEGIN WordPress section
+> # Source: https://wordpress.org/support/topic/ssl-redirect-breaks-on-http/
+> <IfModule mod_rewrite.c>
+> RewriteEngine on
+> RewriteCond %{HTTPS} !=on [NC]
+> RewriteRule ^(.*)$ https://%{HTTP_HOST}%/$1 [R=301,L]
+> </IfModule>
+>
+> # BEGIN WordPress
+> # The directives (lines) between `BEGIN WordPress` and `END WordPress` are
+> # dynamically generated, and should only be modified via WordPress filters.
+> # Any changes to the directives between these markers will be overwritten.
+> <IfModule mod_rewrite.c>
+> RewriteEngine On
+> RewriteBase /
+> RewriteRule ^index\.php$ - [L]
+> RewriteCond %{REQUEST_FILENAME} !-f
+> RewriteCond %{REQUEST_FILENAME} !-d
+> RewriteRule . /index.php [L]
+> </IfModule>
+> # END WordPress
 
 
 
